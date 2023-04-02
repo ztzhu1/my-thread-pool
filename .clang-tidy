@@ -21,6 +21,8 @@ Checks:     '
             -modernize-avoid-c-arrays,
             -modernize-use-nodiscard,
             -modernize-use-trailing-return-type,
+            -modernize-avoid-bind,
+            -llvm-include-order,
             -readability-convert-member-functions-to-static,
             -readability-identifier-length,
             -readability-function-cognitive-complexity,
@@ -36,10 +38,11 @@ CheckOptions:
   - { key: readability-identifier-naming.FunctionCase,        value: lower_case  }
   - { key: readability-identifier-naming.GlobalConstantCase,  value: UPPER_CASE }
   - { key: readability-identifier-naming.MemberCase,          value: lower_case }
+  - { key: readability-identifier-naming.MemberPrefix,        value: _}
   - { key: readability-identifier-naming.NamespaceCase,       value: lower_case }
   - { key: readability-identifier-naming.StructCase,          value: CamelCase  }
   - { key: readability-identifier-naming.UnionCase,           value: CamelCase  }
   - { key: readability-identifier-naming.VariableCase,        value: lower_case }
-WarningsAsErrors: '*'
+WarningsAsErrors: '*, -llvm-header-guard'
 HeaderFilterRegex: '/(src|test)'
 AnalyzeTemporaryDtors: true
