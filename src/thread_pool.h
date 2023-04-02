@@ -33,9 +33,24 @@ class ThreadPool {
     bool running() { return _running; }
     size_t num_running() { return _num_running; }
     size_t num_waiting() { return _num_waiting; }
+    size_t num_done() { return _num_done; }
 
     TASK_TYPE_TEMPLATE
-    [[nodiscard]] std::future<R> submit(F &&fn, Args &&...args);
+    [[nodiscard]] std::future<R> submit(F &&fn, Args &&...args) {
+        assert(running());
+
+        std::function<R()> binded_fn = std::bind(std::forward<F>(fn), std::forward<Args>(args)...);
+        std::shared_ptr<std::promise<R>> p = std::make_shared<std::promise<R>>();
+        push_task(Task([p, binded_fn]() {
+            if constexpr (std::is_void_v<R>) {
+                std::invoke(binded_fn);
+                p->set_value();
+            } else {
+                p->set_value(std::invoke(binded_fn));
+            }
+        }));
+        return p->get_future();
+    }
 
   private:
     class ThreadQuitReminder {
@@ -59,8 +74,9 @@ class ThreadPool {
     std::set<task_id_t> _tasks_running{};
     std::atomic<size_t> _num_waiting{0};
     std::atomic<size_t> _num_running{0};
+    std::atomic<size_t> _num_done{0};
 
     std::condition_variable _task_available_cv{};
-    std::mutex _task_waiting_mu{};
-    std::mutex _task_running_mu{};
+    std::mutex _task_waiting_queue_mu{};
+    std::mutex _task_running_queue_mu{};
 };
