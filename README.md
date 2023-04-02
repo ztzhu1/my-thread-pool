@@ -1,0 +1,2 @@
+# My Thread Pool
+This project is a (really) simplified version of [BS::thread_pool](https://github.com/bshoshany/thread-pool). It doesn't use any fancy algorithm. Just making myself familiar with `condition_variable`, `type_traits` and `future`.
