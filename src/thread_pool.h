@@ -63,7 +63,7 @@ class ThreadPool {
     };
 
     void worker_loop(thread_id_t thread_id);
-    void for_each(std::function<void(thread_id_t)> fn);
+    void for_each(const std::function<void(thread_id_t)> &fn);
     void push_task(const Task &task);
 
     num_thread_t _num_thread;

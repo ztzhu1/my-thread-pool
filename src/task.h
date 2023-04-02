@@ -8,7 +8,7 @@
 class Task {
   public:
     Task() = delete;
-    explicit Task(task_t task_fn) : _task_fn(task_fn), _id(TASK_ID_ALLOCATOR.next()) {}
+    explicit Task(task_t &&task_fn) : _task_fn(std::move(task_fn)), _id(TASK_ID_ALLOCATOR.next()) {}
     Task(const Task &that) {
         _task_fn = that._task_fn;
         _id = that._id;

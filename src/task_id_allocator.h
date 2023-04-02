@@ -17,4 +17,4 @@ class TaskIdAllocator {
     std::atomic<task_id_t> _next_id{0};
 };
 
-extern TaskIdAllocator TASK_ID_ALLOCATOR;
+extern TaskIdAllocator TASK_ID_ALLOCATOR; // NOLINT

@@ -57,7 +57,7 @@ void ThreadPool::worker_loop(thread_id_t thread_id) {
     }
 }
 
-void ThreadPool::for_each(function<void(thread_id_t)> fn) {
+void ThreadPool::for_each(const function<void(thread_id_t)> &fn) {
     for (thread_id_t i = 0; i < _num_thread; ++i) {
         fn(i);
     }
